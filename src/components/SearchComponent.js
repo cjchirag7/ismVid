@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Input,InputGroup,InputGroupAddon, InputGroupText} from 'reactstrap';
+import {Input,InputGroup,InputGroupAddon, InputGroupText, ListGroup, ListGroupItem, Badge } from 'reactstrap';
 
 class Search extends Component {
     constructor(props){
@@ -15,7 +15,9 @@ class Search extends Component {
     }
     render(){
         return(
+
         <div className="container">
+        <br/>
         <div className="row">
         <InputGroup>
         <InputGroupAddon addonType="prepend">
@@ -24,8 +26,15 @@ class Search extends Component {
         <Input value={this.state.keyword} onChange={this.changeInput} />
       </InputGroup>
       </div>
+      <br/>
       <div>
-          <h2> Search Results </h2>
+      <ListGroup>
+        <ListGroupItem tag="a" href="#">Cras justo odio <Badge color="info">Info</Badge></ListGroupItem>
+        <ListGroupItem tag="a" href="#">Dapibus ac facilisis in</ListGroupItem>
+        <ListGroupItem tag="a" href="#">Morbi leo risus</ListGroupItem>
+        <ListGroupItem tag="a" href="#">Porta ac consectetur ac</ListGroupItem>
+        <ListGroupItem tag="a" href="#">Vestibulum at eros</ListGroupItem>
+      </ListGroup>
       </div>
       </div>
         );

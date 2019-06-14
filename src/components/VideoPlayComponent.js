@@ -21,17 +21,17 @@ class VideoPlay extends Component{
             <CardText>{this.props.video.description}</CardText>
             <div className="row">
             <div className="mr-auto">
-            <Button color="primary"><i class="fa fa-thumbs-up"></i>Like</Button>
+            <Button color="primary"><i class="fa fa-thumbs-up"></i> 33</Button>
             &nbsp;&nbsp;<Button color="success"><i class="fa fa-pencil"></i>Comment</Button>
             </div>
          <div className="ml-auto mt-2 a2a_kit a2a_kit_size_32 a2a_default_style">
             <a className="a2a_dd" href="https://www.addtoany.com/share">.</a>
-            <a className="a2a_button_email" href="#">.</a>
-            <a className="a2a_button_linkedin" href="#">.</a>
-            <a className="a2a_button_whatsapp" href="#">.</a>
-            <a className="a2a_button_google_gmail" href="#">.</a>
-            <a className="a2a_button_facebook" href="#">.</a>
-            <a className="a2a_button_twitter" href="#">.</a>
+            <a className="a2a_button_email"></a>
+            <a className="a2a_button_linkedin"></a>
+            <a className="a2a_button_whatsapp"></a>
+            <a className="a2a_button_google_gmail"></a>
+            <a className="a2a_button_facebook"></a>
+            <a className="a2a_button_twitter"></a>
         </div>
         </div>
             </div>

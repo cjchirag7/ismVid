@@ -1,19 +1,68 @@
 import React,{Component} from 'react';
 import {Navbar, Nav, NavbarToggler,Collapse,NavItem, NavbarBrand, Modal, ModalBody, ModalHeader, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import firebase from 'firebase';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import {KEY} from '../key.js';
 
+
+firebase.initializeApp({
+    apiKey: KEY,
+    authDomain: 'ismvid-eeeee.firebaseapp.com'
+  });
+
+function Logger(props){
+  if(props.isSignedIn===false)
+  return (
+    <React.Fragment>
+    <Button color="danger" outline onClick={props.signIn}>                    
+   <span className="fa fa-sign-in fa-lg"></span> Login
+   </Button>
+    </React.Fragment>
+  );
+  else return(
+    <React.Fragment>
+      <Button color="danger" outline onClick={props.signOut}>                     
+   <span className="fa fa-sign-out fa-lg"></span> Log out
+   </Button>
+    </React.Fragment>
+  );
+}
 class Header extends Component{
 
     constructor(props){
         super(props);
         this.state={
          isNavOpen: false,
-         isModalOpen: false
+         isModalOpen: false,
+         isSignedIn: false
         }
         this.toggleModal=this.toggleModal.bind(this);
         this.toggleNav=this.toggleNav.bind(this);
     }
 
+    uiConfig = {
+        signInFlow: "popup",
+        signInOptions: [
+          
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          firebase.auth.GithubAuthProvider.PROVIDER_ID
+        ],
+        callbacks: {
+          signInSuccess: () => false
+        }
+      }
+    
+      componentDidMount = () => {
+        firebase.auth().onAuthStateChanged(user => {
+          this.setState({isSignedIn: !!user});
+          if(this.state.isSignedIn===true){
+              this.props.changeSignIn();
+            }
+        })
+      }
+      
     toggleNav(){
         this.setState({
             isNavOpen: !this.isNavOpen
@@ -49,19 +98,22 @@ class Header extends Component{
                         </NavItem>
                      </Nav>
                      <Nav className="ml-auto" navbar>
-                                <NavItem>
-                                    <Button color="danger" outline onClick={this.toggleModal}><span className="fa fa-sign-in fa-lg"></span> Login</Button>
-                                </NavItem>
+                     <NavItem>
+                        <Logger isSignedIn={this.state.isSignedIn} signIn={()=>{this.toggleModal()}} signOut={()=>{firebase.auth().signOut()}}/>
+                     </NavItem>
                       </Nav>
                      </Collapse>
                     </div>
                  </Navbar>
-                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                 <Modal isOpen={!this.state.isSignedIn&&this.state.isModalOpen} toggle={this.toggleModal}>
                      <ModalHeader toggle={this.toggleModal}>
                          Login
                      </ModalHeader>
                      <ModalBody>
-                        <h4>Here, Google Login Component would be present</h4>                     
+                     <StyledFirebaseAuth
+                        uiConfig={this.uiConfig}
+                        firebaseAuth={firebase.auth()}
+                        />
                      </ModalBody>
                  </Modal>
                 </React.Fragment>
