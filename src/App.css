@@ -46,3 +46,7 @@ address{
 .frame{
     position: absolute;
 }
+
+.search-result{
+    min-height: 90vh;
+}

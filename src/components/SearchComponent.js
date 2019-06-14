@@ -9,12 +9,29 @@ class Search extends Component {
     };
     this.changeInput=this.changeInput.bind(this);
     }
+
     changeInput(e) {
         let val=e.target.value;
         this.setState({keyword: val });
     }
+
     render(){
-        return(
+      var colors=["warning","danger","success","info","secondary"]
+      var keyRegex=new RegExp(this.state.keyword, 'i');   
+      console.log(keyRegex);
+      const SearchResults=this.props.videos.map(
+              (video)=>{
+                if(((video.title).search(keyRegex)!==-1)||(this.props.fests[video.festid-1].name.search(keyRegex)!==-1)){
+                  return(
+                    <ListGroupItem tag="a" href={`home/${video.id}`} action key={video.id}> {video.title}  <Badge color={colors[video.festid%5]} pill> {this.props.fests[video.festid-1].name}</Badge></ListGroupItem>          
+                  );
+                }
+                else return (
+                  <div/>
+                )
+              }    );        
+
+      return(
 
         <div className="container">
         <br/>
@@ -27,13 +44,9 @@ class Search extends Component {
       </InputGroup>
       </div>
       <br/>
-      <div>
+      <div className="search-result">
       <ListGroup>
-        <ListGroupItem tag="a" href="#">Cras justo odio <Badge color="info">Info</Badge></ListGroupItem>
-        <ListGroupItem tag="a" href="#">Dapibus ac facilisis in</ListGroupItem>
-        <ListGroupItem tag="a" href="#">Morbi leo risus</ListGroupItem>
-        <ListGroupItem tag="a" href="#">Porta ac consectetur ac</ListGroupItem>
-        <ListGroupItem tag="a" href="#">Vestibulum at eros</ListGroupItem>
+      {SearchResults}
       </ListGroup>
       </div>
       </div>
