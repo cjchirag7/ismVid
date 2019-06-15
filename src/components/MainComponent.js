@@ -4,10 +4,12 @@ import Footer from './FooterComponent.js';
 import Home from './HomeComponent.js';
 import Search from './SearchComponent.js';
 import VideoPlay from './VideoPlayComponent.js';
-import firebase from 'firebase';
+import firebase from '../config';
 import {Switch,Route,Redirect} from 'react-router-dom';
 import {FESTS} from '../shared/fests';
 import {VIDEOS} from '../shared/videos';
+import 'firebase/database';
+
 
 
 class Main extends Component {
@@ -19,17 +21,21 @@ constructor(props){
         videos: VIDEOS,
         isSignedIn: false,
         userEmail: "",
-        userName: "Anonymous" 
+        userName: "Anonymous",
+        comments: [],
+        likes:[]
     };
     this.changeSignIn=this.changeSignIn.bind(this);
-}
+    this.addLike=this.addLike.bind(this);
+    this.addComment=this.addComment.bind(this);
+  }
 
 changeSignIn(){
-this.setState({isSignedIn: true});
-}
-
-componentDidMount(){
 if(firebase.auth().currentUser!==null)
+  this.setState({isSignedIn: true});
+else
+this.setState({isSignedIn: false});
+  if(firebase.auth().currentUser!==null)
   {
     this.setState({      userEmail: firebase.auth().currentUser.email,
     userName: firebase.auth().currentUser.displayName
@@ -37,13 +43,133 @@ if(firebase.auth().currentUser!==null)
   }
 }
 
+addComment(videoId,text){
+  if(firebase.auth().currentUser===null)
+  this.setState({isSignedIn: false});
+
+  if(this.state.isSignedIn===false)
+  {
+    alert('You need to log in first, to contribute 1 like.');
+  }
+  else if(this.state.comments){
+    let oldSnap;
+    let len=this.state.likes[videoId-1].userEmail.length;
+   let likesData=firebase.database().ref('likes/'+(videoId-1)+'/userEmail');
+   likesData.on('value',(snapshot)=>{
+    oldSnap=[...snapshot.val()]   
+      });
+      let email=this.state.userEmail;
+      let index;
+      let i;
+      for(i=0; i<oldSnap.length; i++){
+       if(oldSnap[i].email===email) {
+         index=i;
+         break;
+       }
+      }
+      if(i===oldSnap.length) index=-1;
+          if(index===-1)  
+         {
+           oldSnap.push({'email': email});
+           alert('Like submitted successfully');
+           likesData.set(oldSnap);
+        }
+          else {
+          oldSnap.splice(index,1);
+          alert('Like removed successfully');
+          likesData.set(oldSnap);
+         }
+   
+    }
+}
+
+addLike(videoId){
+  if(firebase.auth().currentUser===null)
+  this.setState({isSignedIn: false});
+
+  if(this.state.isSignedIn===false)
+  {
+    alert('You need to log in first, to contribute 1 like.');
+  }
+  else if(this.state.likes){
+    let oldSnap;
+    let len=this.state.likes[videoId-1].userEmail.length;
+   let likesData=firebase.database().ref('likes/'+(videoId-1)+'/userEmail');
+   likesData.on('value',(snapshot)=>{
+    oldSnap=[...snapshot.val()]   
+      });
+      let email=this.state.userEmail;
+      let index;
+      let i;
+      for(i=0; i<oldSnap.length; i++){
+       if(oldSnap[i].email===email) {
+         index=i;
+         break;
+       }
+      }
+      if(i===oldSnap.length) index=-1;
+          if(index===-1)  
+         {
+           oldSnap.push({'email': email});
+           alert('Like submitted successfully');
+           likesData.set(oldSnap);
+        }
+          else {
+          oldSnap.splice(index,1);
+          alert('Like removed successfully');
+          likesData.set(oldSnap);
+         }
+   
+    }
+}
+
+componentDidMount(){
+let commentRef=firebase.database().ref('comments');
+commentRef.on('value',(snapshot)=>{
+let comments=snapshot.val();
+let newstate=[];
+for(let commentId in comments){
+  newstate.push({
+    id: commentId,
+    movieId: comments[commentId].movieId,
+    text: comments[commentId].text,
+    author: comments[commentId].author,
+    date: comments[commentId].date
+  });
+}
+this.setState({
+  comments: newstate
+});
+});
+
+let likeRef=firebase.database().ref('likes');
+likeRef.on('value',(snapshot)=>{
+let likes=snapshot.val();
+let newlikestate=[];
+for(let likeId in likes){
+  newlikestate.push({
+    id: likeId,
+    movieId: likes[likeId].movieId,
+    userEmail: likes[likeId].userEmail
+   });
+}
+this.setState({
+  likes: newlikestate
+});
+});
+}
+
 render(){
+  
   const VideoWithId = ({match}) => {
     return(
       <VideoPlay video={this.state.videos.filter((video) => video.id === parseInt(match.params.videoId,10))[0]}
                   userEmail={this.state.userEmail}
                   userName={this.state.userName}
                   isSignedIn={this.state.isSignedIn}
+                  comments={this.state.comments}
+                  likes={this.state.likes}
+                  addLike={this.addLike}
       />
       );
   };

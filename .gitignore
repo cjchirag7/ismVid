@@ -4,8 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-src/key.js
-
+src/config.js
+src/ismvid-eeeee-export.json
 # testing
 /coverage
 

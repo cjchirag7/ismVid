@@ -1,15 +1,9 @@
 import React,{Component} from 'react';
 import {Navbar, Nav, NavbarToggler,Collapse,NavItem, NavbarBrand, Modal, ModalBody, ModalHeader, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
-import firebase from 'firebase';
+import firebase from '../config';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import {KEY} from '../key.js';
 
-
-firebase.initializeApp({
-    apiKey: KEY,
-    authDomain: 'ismvid-eeeee.firebaseapp.com'
-  });
 
 function Logger(props){
   if(props.isSignedIn===false)
@@ -65,7 +59,7 @@ class Header extends Component{
       
     toggleNav(){
         this.setState({
-            isNavOpen: !this.isNavOpen
+            isNavOpen: !this.state.isNavOpen
         });
     }
 

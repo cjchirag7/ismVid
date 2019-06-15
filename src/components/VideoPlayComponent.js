@@ -1,46 +1,118 @@
-import React, {Component} from 'react';
-import {Card,CardBody, CardText, CardTitle, Button} from 'reactstrap';
-import RenderComments from './CommentComponent'
+import React,{Component} from 'react';
+import {Card,CardBody, CardText, Spinner, CardTitle, Button,ListGroup,ListGroupItem,
+  ListGroupItemText,ListGroupItemHeading, UncontrolledPopover,PopoverBody,PopoverHeader,
+  Modal,ModalBody,ModalHeader,ModalFooter} from 'reactstrap';
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  InstapaperShareButton,
+} from 'react-share';
+
+function ShareButtons(props){
+  function FBbutton(){
+    return (
+      <Button color="primary"><i className="fa fa-facebook"/> Post</Button>
+    );
+  }
+  function Tweetbutton(){
+    return (
+      <Button color="info"><i className="fa fa-twitter"/> Tweet</Button>
+    );
+  }
+  function Instabutton(){
+    return (
+      <Button color="warning"><i className="fa fa-instagram"/> Insta</Button>
+    );
+  }
+  function Whatsappbutton(){
+    return (
+      <Button color="success"><i className="fa fa-whatsapp"/> Share</Button>
+    );
+  }
+ 
+  return(
+  <div className="ml-auto">
+  <Button color="secondary" id="share" type="button"><i className="fa fa-share-alt"/> Share</Button>
+  <UncontrolledPopover trigger="legacy" placement="left" target="share">
+        <PopoverHeader>Share </PopoverHeader>
+        <PopoverBody>
+        <FacebookShareButton url={window.location.href} children={FBbutton()} quote={props.video.description}/>
+  &nbsp;<InstapaperShareButton url={window.location.href} children={Instabutton()} title={props.video.title} description={props.video.description}/>
+  &nbsp;<TwitterShareButton url={window.location.href} children={Tweetbutton()} title={props.video.title} via={props.video.description}/>
+  &nbsp;<WhatsappShareButton url={window.location.href} children={Whatsappbutton()} title={props.video.title}/>
+          </PopoverBody>
+      </UncontrolledPopover>
+  
+  </div>
+    );
+  }
+
 class VideoPlay extends Component{
 
-    constructor(props){
-        super(props);
-        this.state={
-          likes: 0  
-        };
-    }
+constructor(props){
+  super(props);
+  this.state={
+    isModalOpen: false
+  };
+  this.toggleModal=this.toggleModal.bind(this);
+}
 
-    render(){
-        return(
+toggleModal(){
+  this.setState({
+    isModalOpen: !this.state.isModalOpen
+  });
+}
+
+render(){    
+  let requiredComments =this.props.comments.filter((comment)=>(comment.movieId===this.props.video.id)
+        );
+
+        let RenderComments=requiredComments.map(
+            (comment)=>{return (
+          <ListGroupItem key={comment.id}>
+          <ListGroupItemHeading>{comment.author}</ListGroupItemHeading>
+          <ListGroupItemText>
+                {comment.text}<br/>
+               <i> {new Intl.DateTimeFormat('en-US',{year: 'numeric', month: 'short', day: '2-digit'}).format(new Date( Date.parse(comment.date)))}</i>
+          </ListGroupItemText>
+        </ListGroupItem>
+            )    ;
+            }
+        );
+        let requiredLikes=(this.props.likes.filter((like)=>(like.movieId===this.props.video.id) )[0]);
+
+    return(
             <React.Fragment>
             <Card>
             <div className="video_Container"> <iframe src={this.props.video.src} width="100%" title={this.props.video.title} className="frame" height="100%" frameborder="0" scrolling="auto" allowfullscreen></iframe> </div>
             <CardBody>
-            <div class="container">
-            <CardTitle>{this.props.video.title}</CardTitle>
+            <div className="container">
+            <CardTitle><h3>{this.props.video.title}</h3></CardTitle>
             <CardText>{this.props.video.description}</CardText>
             <div className="row">
             <div className="mr-auto">
-            <Button color="primary"><i class="fa fa-thumbs-up"></i> 33</Button>
-            &nbsp;&nbsp;<Button color="success"><i class="fa fa-pencil"></i>Comment</Button>
+            <Button onClick={()=>{this.props.addLike(this.props.video.id)}} color="primary"><i className="fa fa-thumbs-up"></i> 
+             &nbsp;{requiredLikes!==undefined?requiredLikes.userEmail.length:(<Spinner type="grow" color="light" size="sm"/>)}
+            </Button>
+            &nbsp;&nbsp;<Button color="success" onClick={this.toggleModal}><i className="fa fa-pencil"></i>Comment</Button>
             </div>
-         <div className="ml-auto mt-2 a2a_kit a2a_kit_size_32 a2a_default_style">
-            <a className="a2a_dd" href="https://www.addtoany.com/share">.</a>
-            <a className="a2a_button_email"></a>
-            <a className="a2a_button_linkedin"></a>
-            <a className="a2a_button_whatsapp"></a>
-            <a className="a2a_button_google_gmail"></a>
-            <a className="a2a_button_facebook"></a>
-            <a className="a2a_button_twitter"></a>
+           <ShareButtons video={this.props.video}/>			
         </div>
-        </div>
+        <br/>
+        <ListGroup>
+        <ListGroupItem active>
+          <ListGroupItemHeading>{(requiredComments.length>0)?requiredComments.length:(<Spinner type="grow" color="light" size="md" />)} Comments</ListGroupItemHeading>
+          </ListGroupItem>
+        {RenderComments}
+        </ListGroup>
             </div>
-            <RenderComments videoId={this.props.video.id}/>
             </CardBody>
             </Card>
+            
             </React.Fragment>
             );
-    }
+}
 }
 
 export default VideoPlay;

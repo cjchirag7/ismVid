@@ -33,7 +33,7 @@ export const VIDEOS=[
     },
     {
         id: 5,
-        title: 'Aftermovie - Srijan 2019',
+        title: 'Aftermovie - Srijan 2018',
         src: 'https://cdn.jwplayer.com/players/lmg9BNDe-7plD8cgs.html',
         thumbnail:'srijan18after.jpg',
         festid: 1,
