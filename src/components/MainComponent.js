@@ -44,43 +44,26 @@ this.setState({isSignedIn: false});
 }
 
 addComment(videoId,text){
+  
   if(firebase.auth().currentUser===null)
   this.setState({isSignedIn: false});
 
-  if(this.state.isSignedIn===false)
-  {
-    alert('You need to log in first, to contribute 1 like.');
-  }
-  else if(this.state.comments){
-    let oldSnap;
-    let len=this.state.likes[videoId-1].userEmail.length;
-   let likesData=firebase.database().ref('likes/'+(videoId-1)+'/userEmail');
-   likesData.on('value',(snapshot)=>{
-    oldSnap=[...snapshot.val()]   
-      });
-      let email=this.state.userEmail;
-      let index;
-      let i;
-      for(i=0; i<oldSnap.length; i++){
-       if(oldSnap[i].email===email) {
-         index=i;
-         break;
-       }
-      }
-      if(i===oldSnap.length) index=-1;
-          if(index===-1)  
-         {
-           oldSnap.push({'email': email});
-           alert('Like submitted successfully');
-           likesData.set(oldSnap);
-        }
-          else {
-          oldSnap.splice(index,1);
-          alert('Like removed successfully');
-          likesData.set(oldSnap);
-         }
-   
-    }
+ if(this.state.comments){
+  let commentSnap;
+  let commentsData=firebase.database().ref('comments');
+   commentsData.on('value',(snapshot)=>{
+    commentSnap=[...snapshot.val()]   
+      })
+      let name=this.state.userName;
+      let len=commentSnap.length;
+      let today=new Date();
+      commentSnap.push({'id': Number(len+1),'movieId': (videoId),'text': text, 'author': name,'date': String(today)});
+      alert('Comment submitted successfully');
+      commentsData.set(commentSnap);      
+}
+else{
+  alert('Server is taking time to respond. Please try again after sometime.')
+}
 }
 
 addLike(videoId){
@@ -170,6 +153,8 @@ render(){
                   comments={this.state.comments}
                   likes={this.state.likes}
                   addLike={this.addLike}
+                  addComment={this.addComment}
+                  changeSignIn={this.changeSignIn}
       />
       );
   };
@@ -183,7 +168,7 @@ return (
                   <Route exact path='/search' component={() => <Search fests={this.state.fests} videos={this.state.videos}/>}/>
                   <Redirect to="/home"/>
       </Switch>
-    <Footer/>
+    <Footer changeSignIn={this.changeSignIn} userName={this.state.userName}/>
       </div>
        );     
 }

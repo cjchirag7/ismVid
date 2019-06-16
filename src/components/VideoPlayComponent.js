@@ -1,13 +1,15 @@
 import React,{Component} from 'react';
 import {Card,CardBody, CardText, Spinner, CardTitle, Button,ListGroup,ListGroupItem,
   ListGroupItemText,ListGroupItemHeading, UncontrolledPopover,PopoverBody,PopoverHeader,
-  Modal,ModalBody,ModalHeader,ModalFooter} from 'reactstrap';
+  Modal,ModalBody,ModalHeader,ModalFooter,Input,InputGroup,InputGroupAddon, InputGroupText} 
+  from 'reactstrap';
 import {
   FacebookShareButton,
   TwitterShareButton,
   WhatsappShareButton,
   InstapaperShareButton,
 } from 'react-share';
+import firebase from '../config';
 
 function ShareButtons(props){
   function FBbutton(){
@@ -53,15 +55,32 @@ class VideoPlay extends Component{
 constructor(props){
   super(props);
   this.state={
-    isModalOpen: false
+    isModalOpen: false,
+    commentText: ''
   };
   this.toggleModal=this.toggleModal.bind(this);
+  this.changeInput=this.changeInput.bind(this);
+}
+
+componentDidMount = () => {
+  firebase.auth().onAuthStateChanged(user => {
+    this.setState({isSignedIn: !!user});
+    if(this.state.isSignedIn===true){
+        this.props.changeSignIn();
+      }
+  })
 }
 
 toggleModal(){
   this.setState({
     isModalOpen: !this.state.isModalOpen
   });
+}
+
+
+changeInput(e) {
+  let val=e.target.value;
+  this.setState({commentText: val });
 }
 
 render(){    
@@ -109,7 +128,30 @@ render(){
             </div>
             </CardBody>
             </Card>
-            
+            <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} className="warning">
+          <ModalHeader toggle={this.toggleModal}>Comment</ModalHeader>
+          <ModalBody>
+           Name of author : {(this.props.userName==='Anonymous')?'Anonymous (Log in to get your name here)':this.props.userName}<br/><br/>
+           <InputGroup>
+        <InputGroupAddon addonType="prepend">
+          <InputGroupText>Enter comment : </InputGroupText>
+        </InputGroupAddon>
+        <Input type="textarea" value={this.state.commentText} onChange={this.changeInput} />
+      </InputGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={(e)=>{
+                                              e.preventDefault();
+                                              if(this.state.commentText==='') {
+                                                alert('Please enter some text in the comment.');
+                                              }
+                                              else{
+                                                this.toggleModal();
+                                              this.props.addComment(this.props.video.id,this.state.commentText);
+                                              }
+                                            }}>Submit</Button>{' '}
+          </ModalFooter>
+        </Modal>
             </React.Fragment>
             );
 }
