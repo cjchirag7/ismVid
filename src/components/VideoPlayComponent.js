@@ -9,8 +9,6 @@ import {
   WhatsappShareButton,
   InstapaperShareButton,
 } from 'react-share';
-import firebase from '../config';
-
 function ShareButtons(props){
   function FBbutton(){
     return (
@@ -60,14 +58,6 @@ constructor(props){
   };
   this.toggleModal=this.toggleModal.bind(this);
   this.changeInput=this.changeInput.bind(this);
-}
-
-componentDidMount = () => {
-  firebase.auth().onAuthStateChanged(user => {
-    this.setState({isSignedIn: !!user});
-
-        this.props.changeSignIn();
-  })
 }
 
 toggleModal(){

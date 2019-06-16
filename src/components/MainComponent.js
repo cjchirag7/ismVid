@@ -25,6 +25,7 @@ constructor(props){
         comments: [],
         likes:[]
     };
+    this.updateUser=this.updateUser.bind(this);
     this.changeSignIn=this.changeSignIn.bind(this);
     this.addLike=this.addLike.bind(this);
     this.addComment=this.addComment.bind(this);
@@ -100,7 +101,26 @@ addLike(videoId){
     }
 }
 
+updateUser(){
+  if(firebase.auth().currentUser!==null)
+    {
+      this.setState({      userEmail: firebase.auth().currentUser.email,
+      userName: firebase.auth().currentUser.displayName
+    });
+    }
+    else{
+      this.setState({      userEmail: "",
+        userName: 'Anonymous'
+      });
+    }
+}
+
 componentDidMount(){
+      firebase.auth().onAuthStateChanged(user => {
+      this.updateUser();
+          this.changeSignIn();
+    });
+
 let commentRef=firebase.database().ref('comments');
 commentRef.on('value',(snapshot)=>{
 let comments=snapshot.val();
@@ -149,6 +169,7 @@ render(){
                   addLike={this.addLike}
                   addComment={this.addComment}
                   changeSignIn={this.changeSignIn}
+                  updateUser={this.updateUser}
       />
       );
   };
