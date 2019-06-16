@@ -77,18 +77,18 @@ class Footer extends Component {
     <div className="footer mt-3">
         <div className="container">
             <div className="row justify-content-center">             
-                <div className="col-4 offset-1 col-sm-2">
+                <div className="col-11 offset-1 col-sm-2">
                     <Link to=''>
-                    <h4>ismVid</h4>
+                    <h4 align="center">ismVid</h4>
                     </Link>
-                    <h5> The Video Streaming website of IIT (ISM)</h5>
+                    <h5 align="center"> The Video Streaming website of IIT (ISM)</h5>
                 </div>
-                <div className="col-7 col-sm-5 align-self-center">
+                <div className="col-6 col-sm-5 align-self-center">
                 <div className="text-center ">
                 <Button color="primary" size="md" onClick={this.toggleSuggestion} active>Suggest a video</Button>
                 </div>
                 </div>
-                <div className="col-12 col-sm-4 align-self-center">
+                <div className="col-6 col-sm-4 align-self-center">
                     <div className="text-center">
                     <Button color="success" size="md" onClick={this.toggleFeedback} active>Give Feedback</Button>
                     </div>
@@ -96,6 +96,7 @@ class Footer extends Component {
             </div>
             <div className="row justify-content-center">             
                 <div className="col-auto">
+                    <br/>
                     <p>© Copyright 2019 Chirag Jain</p>
                 </div>
             </div>
