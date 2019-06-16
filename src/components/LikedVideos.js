@@ -1,5 +1,5 @@
 import React from 'react';
-import {ListGroup, ListGroupItem, Badge } from 'reactstrap';
+import {ListGroup, ListGroupItem, Badge,Spinner } from 'reactstrap';
 import firebase from '../config';
 import 'firebase/database';
 
@@ -35,7 +35,12 @@ const RequiredVideos=props.videos.map(
           else return (
             <div/>
           )
-        }   
+        }
+        else if(video.id===4) return (
+          <div className="text-center">
+            <Spinner color="primary" />
+            </div>
+        )   ;
      } );        
 
 return(
