@@ -6,7 +6,7 @@ import 'firebase/database';
 function LikedVideos(props){
 if(props.isSignedIn===false) return(
 <div className="search-result text-center">
-    <br/><br/>
+    <br/><br/><br/><br/><br/>
     <h3>Please log in to view this page</h3>
 </div>
 );
@@ -47,8 +47,9 @@ return(
 
   <div className="container">
   <br/>
-<br/>
+<br/><br/>
 <div className="search-result">
+<br/>
 <ListGroup>
 {RequiredVideos}
 </ListGroup>

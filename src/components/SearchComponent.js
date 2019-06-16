@@ -34,7 +34,7 @@ class Search extends Component {
       return(
 
         <div className="container">
-        <br/>
+        <br/><br/><br/><br/>
         <div className="row">
         <InputGroup>
         <InputGroupAddon addonType="prepend">

@@ -44,6 +44,7 @@ function Home(props){
         <div className="container">
         <div className="row row-header">
         <div className="col-12 col-sm-6">
+            <br/>
                           <h1>ismVid</h1>
                        <p>Welcome to the video streaming site of IIT(ISM). 
                            Here, you can enjoy all the videos of various fests of the college, 

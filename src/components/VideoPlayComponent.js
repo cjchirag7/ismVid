@@ -92,6 +92,9 @@ render(){
 
     return(
             <React.Fragment>
+            
+            <br/>
+            <br/><br/>
             <Card>
             <div className="video_Container"> <iframe src={this.props.video.src} width="100%" title={this.props.video.title} className="frame" height="100%" frameborder="0" scrolling="auto" allowfullscreen></iframe> </div>
             <CardBody>
