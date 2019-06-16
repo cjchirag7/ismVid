@@ -45,16 +45,7 @@ class Footer extends Component {
         let val=e.target.value;
   this.setState({url: val });
     }
-
-    componentDidMount = () => {
-        firebase.auth().onAuthStateChanged(user => {
-          this.setState({isSignedIn: !!user});
-          if(this.state.isSignedIn===true){
-              this.props.changeSignIn();
-            }
-        })
-      }
-
+    
     addFeedback(message){
         if(firebase.auth().currentUser===null)
             this.setState({isSignedIn: false});

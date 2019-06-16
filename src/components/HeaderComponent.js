@@ -50,11 +50,22 @@ class Header extends Component{
     
       componentDidMount = () => {
         firebase.auth().onAuthStateChanged(user => {
+          if(firebase.auth().currentUser!==null)
+        {
+          this.setState({      userEmail: firebase.auth().currentUser.email,
+          userName: firebase.auth().currentUser.displayName
+        });
+        }
+        else{
+          this.setState({      userEmail: "",
+            userName: 'Anonymous'
+          });
+        }
           this.setState({isSignedIn: !!user});
-          if(this.state.isSignedIn===true){
               this.props.changeSignIn();
-            }
         })
+        
+      
       }
       
     toggleNav(){

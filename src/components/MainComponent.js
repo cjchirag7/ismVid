@@ -35,12 +35,6 @@ if(firebase.auth().currentUser!==null)
   this.setState({isSignedIn: true});
 else
 this.setState({isSignedIn: false});
-  if(firebase.auth().currentUser!==null)
-  {
-    this.setState({      userEmail: firebase.auth().currentUser.email,
-    userName: firebase.auth().currentUser.displayName
-  });
-  }
 }
 
 addComment(videoId,text){

@@ -65,16 +65,15 @@ constructor(props){
 componentDidMount = () => {
   firebase.auth().onAuthStateChanged(user => {
     this.setState({isSignedIn: !!user});
-    if(this.state.isSignedIn===true){
+
         this.props.changeSignIn();
-      }
   })
 }
 
 toggleModal(){
-  this.setState({
-    isModalOpen: !this.state.isModalOpen
-  });
+  this.setState((state) => ({
+    isModalOpen: !state.isModalOpen
+  }));
 }
 
 
