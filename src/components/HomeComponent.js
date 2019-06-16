@@ -45,11 +45,11 @@ function Home(props){
         <div className="row row-header">
         <div className="col-12 col-sm-6">
             <br/>
-                          <h1>ismVid</h1>
-                       <p>Welcome to the video streaming site of IIT(ISM). 
+                          <h1 >ismVid</h1>
+                       <h6 >Welcome to the video streaming site of IIT(ISM). 
                            Here, you can enjoy all the videos of various fests of the college, 
-                           like, comment or share them. You are free to suggest more videos.</p>
-                       <p>You are also requested to provide feedback to us regarding this website.</p>
+                           like, comment or share them. You are free to suggest more videos.</h6>
+                       <h6 >You are also requested to provide feedback to us regarding this website.</h6>
         </div>        
         </div>
         </div>
