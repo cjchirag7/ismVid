@@ -8,6 +8,7 @@ import firebase from '../config';
 import {Switch,Route,Redirect} from 'react-router-dom';
 import {FESTS} from '../shared/fests';
 import {VIDEOS} from '../shared/videos';
+import LikedVideos from './LikedVideos';
 import 'firebase/database';
 
 
@@ -99,6 +100,7 @@ addLike(videoId){
          }
    
     }
+    else alert('Server Error');
 }
 
 updateUser(){
@@ -181,6 +183,7 @@ return (
                   <Route exact path='/home' component={() => <Home fests={this.state.fests} videos={this.state.videos} />} />
                   <Route path='/home/:videoId' component={VideoWithId} />
                   <Route exact path='/search' component={() => <Search fests={this.state.fests} videos={this.state.videos}/>}/>
+                  <Route exact path='/liked' component={() => <LikedVideos fests={this.state.fests} videos={this.state.videos} userEmail={this.state.userEmail} likes={this.state.likes} isSignedIn={this.state.isSignedIn}/>}/>
                   <Redirect to="/home"/>
       </Switch>
     <Footer changeSignIn={this.changeSignIn} userName={this.state.userName}/>
