@@ -17,7 +17,7 @@ function RenderVideos(props){
                 {
                     required.map((video)=>{
                 return (
-                <div className="col-12 col-sm-6 col-md-3" key={video.id}>
+                <div className="col-12 col-sm-6 m-2 col-md-3" key={video.id}>
                 <Card className="linked">
                 <Link to={`/home/${video.id}`}>
                 <CardImg top width="100%" src={'./images/'+video.thumbnail} alt={video.title} />
