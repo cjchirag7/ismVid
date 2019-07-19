@@ -72,6 +72,10 @@ changeInput(e) {
   this.setState({commentText: val });
 }
 
+componentDidMount() {
+  window.scrollTo(0, 0)
+}
+
 render(){    
   let requiredComments =this.props.comments.filter((comment)=>(comment.movieId===this.props.video.id)
         );

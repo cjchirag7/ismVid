@@ -50,3 +50,7 @@ address{
 .search-result{
     min-height: 90vh;
 }
+
+.description{
+    font-family: courier;
+}
